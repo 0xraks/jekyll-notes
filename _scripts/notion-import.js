@@ -49,7 +49,7 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 			if (n) {
 				tags.push(n);
 			}
-			}
+		}
 
 		let cats = [];
 		let pcats = r.properties?.['Categories']?.['multi_select'];
@@ -88,8 +88,13 @@ title: ${title}${fmtags}${fmcats}
 `;
 
 		// Generate Markdown content
+		let markdownContent = '';
 		const markdownBlocks = await n2m.pageToMarkdown(id);
-		const markdownContent = markdownBlocks.map(block => n2m.toMarkdownString(block)).join("\n\n");
+		if (Array.isArray(markdownBlocks)) {
+			markdownContent = markdownBlocks.map(block => n2m.toMarkdownString(block)).join("\n\n");
+		} else {
+			markdownContent = n2m.toMarkdownString(markdownBlocks);
+		}
 
 		// Writing to file
 		const fileName = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`;
