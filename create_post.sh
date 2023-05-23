@@ -21,4 +21,9 @@ echo "categories: []" >> "$filename"
 echo "tags: []" >> "$filename"
 echo "---" >> "$filename"
 
-echo "New Markdown file '$filename' created with metadata."
+# Convert the file content to ASCII
+iconv -f UTF-8 -t ASCII//TRANSLIT "$filename" > "${filename}.ascii"
+mv "${filename}.ascii" "$filename"
+
+echo "New Markdown file '$filename' created with metadata in ASCII."
+

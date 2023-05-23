@@ -5,7 +5,7 @@ date: 2023-05-23 00:15:31 +0530
 categories: [tech]
 tags: []
 image:
-  path: "/static/covers/NoMachine-Logo.png"
+  path: "/static/covers/nomachine-square.png"
   alt: "Easy no-machine setup guide"
   caption: 
   relative: true
