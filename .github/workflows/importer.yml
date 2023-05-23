@@ -21,10 +21,10 @@ jobs:
           bundler-cache: true
 
       # Clean tumblr posts before reimporting them
-      - run: rm -rf _posts/tumblr
+#       - run: rm -rf _posts/tumblr
 
-      - run: |
-          bundle exec ruby _scripts/tumblr-import.rb
+#       - run: |
+#           bundle exec ruby _scripts/tumblr-import.rb
 
       - uses: actions/setup-node@v2
         with:
@@ -39,7 +39,7 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         with:
           commit_message: Update Importer posts
           branch: master
