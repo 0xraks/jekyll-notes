@@ -3,8 +3,7 @@ name: Jekyll importer
 on:
   push:
   schedule:
-    - cron: "0 */1 * * *"
-  workflow_dispatch:
+    - cron: "0 1 * * *"
 
 jobs:
   importer:
@@ -19,9 +18,6 @@ jobs:
           ruby-version: 2.7
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-
-      # Clean tumblr posts before reimporting them
-#       - run: rm -rf _posts/tumblr
 
 #       - run: |
 #           bundle exec ruby _scripts/tumblr-import.rb
@@ -39,7 +35,7 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         env:
-          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit_message: Update Importer posts
           branch: main
