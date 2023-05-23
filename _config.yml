@@ -98,11 +98,11 @@ comments:
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo: # <gh-username>/<repo>
-    repo_id:
+    repo: "0xraks/jekyll-notes"
+    repo_id: "R_kgDOJmMA4A"
     category: "Announcements"
-    category_id:
-    mapping: # optional, default to 'pathname'
+    category_id: "DIC_kwDOJmMA4M4CWrOR"
+    mapping: "pathname" # optional, default to 'pathname'
     input_position: # optional, default to 'bottom'
     lang: # optional, default to the value of `site.lang`
     reactions_enabled: # optional, default to the value of `1`
