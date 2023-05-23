@@ -3,19 +3,23 @@ const { NotionToMarkdown } = require("notion-to-md");
 const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
+// or
+// import {NotionToMarkdown} from "notion-to-md";
 
 const notion = new Client({
 	auth: process.env.NOTION_TOKEN,
 });
 
+// passing notion client to the option
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
 (async () => {
-	// Ensure directory exists
-	const root = path.join('_posts', 'notion');
-	fs.mkdirSync(root, { recursive: true });
+	// ensure directory exists
+	const root = path.join('_posts', 'notion')
+	fs.mkdirSync(root, { recursive: true })
 
 	const databaseId = process.env.DATABASE_ID;
+	// TODO has_more
 	const response = await notion.databases.query({
 		database_id: databaseId,
 		filter: {
@@ -24,81 +28,70 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 				equals: true
 			}
 		}
-	});
-
+	})
 	for (const r of response.results) {
-		const id = r.id;
-
-		// Extract front matter values
-		let date = moment(r.created_time).format("YYYY-MM-DD");
-		let pdate = r.properties?.['Date']?.['date']?.['start'];
+		// console.log(r)
+		const id = r.id
+		// date
+		let date = moment(r.created_time).format("YYYY-MM-DD")
+		let pdate = r.properties?.['Date']?.['date']?.['start']
 		if (pdate) {
-			date = moment(pdate).format('YYYY-MM-DD');
+			date = moment(pdate).format('YYYY-MM-DD')
 		}
-
-		let title = id;
-		let ptitle = r.properties?.['Post']?.['title'];
+		// title
+		let title = id
+		let ptitle = r.properties?.['Post']?.['title']
 		if (ptitle?.length > 0) {
-			title = ptitle[0]?.['plain_text'];
+			title = ptitle[0]?.['plain_text']
 		}
-
-		let tags = [];
-		let ptags = r.properties?.['Tags']?.['multi_select'];
+		// tags
+		let tags = []
+		let ptags = r.properties?.['Tags']?.['multi_select']
 		for (const t of ptags) {
-			const n = t?.['name'];
+			const n = t?.['name']
 			if (n) {
-				tags.push(n);
+				tags.push(n)
 			}
 		}
-
-		let cats = [];
-		let pcats = r.properties?.['Categories']?.['multi_select'];
+		// categories
+		let cats = []
+		let pcats = r.properties?.['Categories']?.['multi_select']
 		for (const t of pcats) {
-			const n = t?.['name'];
+			const n = t?.['name']
 			if (n) {
-				cats.push(n);
+				tags.push(n)
 			}
 		}
-
-		const comments = r.properties?.['No Comments']?.['checkbox'] == false;
-
-		// Generate front matter
-		let fmtags = '';
-		let fmcats = '';
+		// comments
+		const comments = r.properties?.['No Comments']?.['checkbox'] == false
+		// frontmatter
+		let fmtags = ''
+		let fmcats = ''
 		if (tags.length > 0) {
-			fmtags += '\ntags:\n';
+			fmtags += '\ntags:\n'
 			for (const t of tags) {
-				fmtags += '  - ' + t + '\n';
+				fmtags += '  - ' + t + '\n'
 			}
 		}
-
 		if (cats.length > 0) {
-			fmcats += '\ncategories:\n';
+			fmcats += '\ncategories:\n'
 			for (const t of cats) {
-				fmcats += '  - ' + t + '\n';
+				fmcats += '  - ' + t + '\n'
 			}
 		}
-
-		const frontMatter = `---
+		const fm = `---
 layout: post
 comments: ${comments}
 date: ${date}
 title: ${title}${fmtags}${fmcats}
 ---
-`;
+`
+		const mdblocks = await n2m.pageToMarkdown(id);
+		const md = n2m.toMarkdownString(mdblocks);
 
-		// Generate Markdown content
-		let markdownContent = '';
-		const markdownBlocks = await n2m.pageToMarkdown(id);
-		if (Array.isArray(markdownBlocks)) {
-			markdownContent = markdownBlocks.map(block => n2m.toMarkdownString(block)).join("\n\n");
-		} else {
-			markdownContent = n2m.toMarkdownString(markdownBlocks);
-		}
-
-		// Writing to file
-		const fileName = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`;
-		fs.writeFile(path.join(root, fileName), frontMatter + markdownContent, (err) => {
+		//writing to file
+		const ftitle = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`
+		fs.writeFile(path.join(root, ftitle), fm + md, (err) => {
 			if (err) {
 				console.log(err);
 			}
