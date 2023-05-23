@@ -37,7 +37,7 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Rakshith Prakashs
+  name: Rakshith Prakash
   email: rakshithp@live.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
@@ -48,7 +48,7 @@ social:
     - https://www.linkedin.com/in/rakshithprakash
     - https://www.youtube.com/rakshithprakash
 
-google_site_verification: # fill in to your verification string
+google_site_verification: hsuJPUPdCuez9r3Bfpj7rG1P1GEttExtK-Ga0SJ1rfM # fill in to your verification string
 
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
