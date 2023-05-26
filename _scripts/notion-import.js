@@ -91,7 +91,11 @@ title: ${title}${fmtags}${fmcats}
 
 		//writing to file
 		const ftitle = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`
-		fs.writeFile(path.join(root, ftitle), fm + md, (err) => {
+		fs.writeFile(path.join(root, ftitle), fm, (err) => {
+			if (err) {
+				console.log(err);
+			}
+    fs.writeFile(path.join(root, ftitle), md, (err) => {
 			if (err) {
 				console.log(err);
 			}
