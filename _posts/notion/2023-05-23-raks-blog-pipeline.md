@@ -1,8 +1,12 @@
----
-layout: post
-comments: true
-date: 2023-05-23
-title: raks-blog-pipeline
+
+## Test heading 2
+
+
+```bash
+#include <stdio.h>
+```
+
+e: raks-blog-pipeline
 tags:
   - ssh
   - linux
@@ -10,4 +14,3 @@ tags:
   - tech
 
 ---
-[object Object]
