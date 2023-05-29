@@ -11,7 +11,7 @@ const url = require('url');
 // import {NotionToMarkdown} from "notion-to-md";
 console.log("Running..");
 const notion = new Client({
-	auth: 'secret_sU0aSDG6JS5UwyRxiAL035ZdZonmduTikLgQ1mRg5iD',
+	auth: process.env.NOTION_TOKEN,
 });
 
 function downloadImage(imageUrl, destinationPath, filename) {
@@ -55,7 +55,7 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 	const root = path.join('_posts', 'notion')
 	fs.mkdirSync(root, { recursive: true })
 
-	const databaseId = '16b4ad98303149078f51507794f35bc5';
+	const databaseId = process.env.DATABASE_ID;
 	// TODO has_more
 	const response = await notion.databases.query({
 		database_id: databaseId,
