@@ -159,7 +159,7 @@ title: ${title} ${fmtags} ${fmcats}
 	alt: ${title}
 	caption: 
 	relative: true
-				`
+  `
 			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
