@@ -7,7 +7,7 @@ tags: []
 image:
   path: "/static/covers/nomachine-square.png"
   alt: "Easy no-machine setup guide"
-  caption: 
+  caption: No-Machine Z
   relative: true
 ---
 
