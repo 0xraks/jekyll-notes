@@ -3,12 +3,49 @@ const { NotionToMarkdown } = require("notion-to-md");
 const moment = require('moment');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
+const https = require('https');
+const url = require('url');
+
 // or
 // import {NotionToMarkdown} from "notion-to-md";
-
+console.log("Running..");
 const notion = new Client({
-	auth: process.env.NOTION_TOKEN,
+	auth: 'secret_sU0aSDG6JS5UwyRxiAL035ZdZonmduTikLgQ1mRg5iD',
 });
+
+function downloadImage(imageUrl, destinationPath, filename) {
+	const options = url.parse(imageUrl);
+	// const filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
+	const filePath = path.join(destinationPath, filename);
+
+	// Check if the destination directory exists, create it if it doesn't
+	if (!fs.existsSync(destinationPath)) {
+		fs.mkdirSync(destinationPath, { recursive: true });
+	}
+
+	// Check if the file already exists
+	if (fs.existsSync(filePath)) {
+		console.log('Image already exists:', filename);
+		return;
+	}
+
+	const file = fs.createWriteStream(filePath);
+
+	https.get(options, response => {
+		response.pipe(file);
+
+		file.on('finish', () => {
+			file.close();
+			console.log('Image downloaded successfully:', filename);
+		});
+	}).on('error', error => {
+		fs.unlink(filePath, () => {
+			console.error('Error:', error);
+		});
+	});
+}
+
 
 // passing notion client to the option
 const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -18,7 +55,7 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 	const root = path.join('_posts', 'notion')
 	fs.mkdirSync(root, { recursive: true })
 
-	const databaseId = process.env.DATABASE_ID;
+	const databaseId = '16b4ad98303149078f51507794f35bc5';
 	// TODO has_more
 	const response = await notion.databases.query({
 		database_id: databaseId,
@@ -88,18 +125,42 @@ title: ${title}${fmtags}${fmcats}
 `
 		const mdblocks = await n2m.pageToMarkdown(id);
 		const md = n2m.toMarkdownString(mdblocks);
-
 		//writing to file
 		const ftitle = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`
-    fs.writeFile(path.join(root, ftitle), fm, (err) => {
+		console.log(fm);
+
+		let destinationFolder = path.join('static', 'images', ftitle);
+		console.log(destinationFolder);
+		const regex = /!\[.*?\]\((.*?)\)/g;
+
+		// Find all matches in the markdown content
+		let match;
+		let temp = md.parent;
+		while ((match = regex.exec(md.parent)) !== null) {
+			const imageUrl = match[1];
+			console.log("Image found: " + imageUrl);
+			const filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
+			downloadImage(imageUrl, destinationFolder, filename)
+			destinationFolder = destinationFolder.replace("\\","/");
+			temp=temp.replace(imageUrl, "../../"+ destinationFolder + "/" + filename);
+		}
+		// console.log(temp);
+
+		fs.writeFile(path.join(root, ftitle), fm + temp, (err) => {
+			console.log(fm);
 			if (err) {
 				console.log(err);
 			}
-		});
-    fs.writeFile(path.join(root, ftitle), md.parent, (err) => {
-			if (err) {
-				console.log(err);
-			}
-		});
+		}
+		);
+		// fs.writeFile(path.join(root, ftitle), , (err) => {
+		// 	// console.log(temp);
+		// 	if (err) {
+		// 		console.log(err);
+		// 	}
+		// }
+		// );
+
+
 	}
 })();
