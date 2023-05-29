@@ -159,15 +159,15 @@ title: ${title} ${fmtags} ${fmcats}
   alt: ${title}
   caption: 
   relative: true
-				`
+`
 			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
 			temp=temp.replace(imageUrl, "../../"+ destinationFolder + "/" + filename);
 		}
 		// console.log(temp);
-fm = fm + `
----`
+fm = fm + `---
+`
 		fs.writeFile(path.join(root, ftitle), fm + temp, (err) => {
 			console.log(fm);
 			// console.log(temp);
