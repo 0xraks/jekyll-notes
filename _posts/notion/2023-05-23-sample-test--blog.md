@@ -11,11 +11,11 @@ categories:
   - software
 
 image: 
-	path: ../../static/images/2023-05-23-sample-test--blog.md/thumbnail
-	alt: Sample Test  Blog
-	caption: 
-	relative: true
-  
+  path: ../../static/images/2023-05-23-sample-test--blog.md/thumbnail
+  alt: Sample Test  Blog
+  caption: 
+  relative: true
+				
 ---
 ```text
 export PKG_CONFIG_PATH=/path/to/pkg-config/files
