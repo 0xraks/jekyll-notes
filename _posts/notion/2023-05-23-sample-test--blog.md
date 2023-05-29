@@ -15,7 +15,7 @@ image:
 	alt: Sample Test  Blog
 	caption: 
 	relative: true
-				
+  
 ---
 ```text
 export PKG_CONFIG_PATH=/path/to/pkg-config/files
