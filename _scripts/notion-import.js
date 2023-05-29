@@ -85,18 +85,20 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 		let tags = []
 		let ptags = r.properties?.['Tags']?.['multi_select']
 		for (const t of ptags) {
-			const n = t?.['name']
-			if (n) {
-				tags.push(n)
+			let tags_find = t?.['name']
+			if (tags_find) {
+				// console.log(n)
+				tags.push(tags_find)
 			}
 		}
 		// categories
 		let cats = []
 		let pcats = r.properties?.['Categories']?.['multi_select']
 		for (const t of pcats) {
-			const n = t?.['name']
+			let n = t?.['name']
 			if (n) {
-				tags.push(n)
+				console.log(n);
+				cats.push(n)
 			}
 		}
 		// comments
@@ -116,18 +118,17 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 				fmcats += '  - ' + t + '\n'
 			}
 		}
-		const fm = `---
+		let fm = `---
 layout: post
 comments: ${comments}
 date: ${date}
-title: ${title}${fmtags}${fmcats}
----
+title: ${title} ${fmtags} ${fmcats}
 `
 		const mdblocks = await n2m.pageToMarkdown(id);
 		const md = n2m.toMarkdownString(mdblocks);
 		//writing to file
 		const ftitle = `${date}-${title.replaceAll(' ', '-').toLowerCase()}.md`
-		console.log(fm);
+		// console.log(fm);
 
 		let destinationFolder = path.join('static', 'images', ftitle);
 		// console.log(destinationFolder);
@@ -145,18 +146,31 @@ title: ${title}${fmtags}${fmcats}
 			let filename = match[1];
 			const imageUrl = match[2];
 			console.log("Image found: " + imageUrl);
+
 			if (!filename) {
 			console.log("Description not found" + imageUrl);
 			filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
+			}
+			if (filename =='thumbnail'){
+				let  thumbnail_path="../../"+ destinationFolder+ "/" + filename;
+				thumbnail_path = thumbnail_path.replace("\\","/");
+				fm =  fm + `image: 
+	path: ${thumbnail_path}
+	alt: ${title}
+	caption: 
+	relative: true
+				`
 			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
 			temp=temp.replace(imageUrl, "../../"+ destinationFolder + "/" + filename);
 		}
 		// console.log(temp);
-
+		fm = fm + `
+---`
 		fs.writeFile(path.join(root, ftitle), fm + temp, (err) => {
 			console.log(fm);
+			// console.log(temp);
 			if (err) {
 				console.log(err);
 			}
