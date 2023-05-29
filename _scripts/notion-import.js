@@ -160,8 +160,10 @@ title: "${title}" ${fmtags} ${fmcats}
   caption: 
   relative: true
 `
-          // Remove the Markdown syntax from temp
+  // Remove the Markdown syntax from temp
   temp = temp.replace(new RegExp('.*\\[thumbnail\\].*\n', 'g'), '');
+  temp = temp.replace(new RegExp('.*\\[Thumbnail\\].*\n', 'g'), '');
+  temp = temp.replace(new RegExp('.*\\[THUMBNAIL\\].*\n', 'g'), '');
 			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
