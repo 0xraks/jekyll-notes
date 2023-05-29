@@ -151,22 +151,22 @@ title: ${title} ${fmtags} ${fmcats}
 			console.log("Description not found" + imageUrl);
 			filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
 			}
-			if (filename =='thumbnail'){
+			if (filename =='thumbnail' || filename =='Thumbnail' || filename =='THUMBNAIL'){
 				let  thumbnail_path="../../"+ destinationFolder+ "/" + filename;
 				thumbnail_path = thumbnail_path.replace("\\","/");
 				fm =  fm + `image: 
-	path: ${thumbnail_path}
-	alt: ${title}
-	caption: 
-	relative: true
-  `
+  path: ${thumbnail_path}
+  alt: ${title}
+  caption: 
+  relative: true
+				`
 			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
 			temp=temp.replace(imageUrl, "../../"+ destinationFolder + "/" + filename);
 		}
 		// console.log(temp);
-		fm = fm + `
+fm = fm + `
 ---`
 		fs.writeFile(path.join(root, ftitle), fm + temp, (err) => {
 			console.log(fm);
