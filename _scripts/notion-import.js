@@ -122,7 +122,7 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 layout: post
 comments: ${comments}
 date: ${date}
-title: ${title} ${fmtags} ${fmcats}
+title: "${title}" ${fmtags} ${fmcats}
 `
 		const mdblocks = await n2m.pageToMarkdown(id);
 		const md = n2m.toMarkdownString(mdblocks);
@@ -155,8 +155,8 @@ title: ${title} ${fmtags} ${fmcats}
 				let  thumbnail_path="../../"+ destinationFolder+ "/" + filename;
 				thumbnail_path = thumbnail_path.replace("\\","/");
 				fm =  fm + `image: 
-  path: ${thumbnail_path}
-  alt: ${title}
+  path: "${thumbnail_path}"
+  alt: "${title}"
   caption: 
   relative: true
 `
