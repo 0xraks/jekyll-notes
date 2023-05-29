@@ -130,16 +130,25 @@ title: ${title}${fmtags}${fmcats}
 		console.log(fm);
 
 		let destinationFolder = path.join('static', 'images', ftitle);
-		console.log(destinationFolder);
-		const regex = /!\[.*?\]\((.*?)\)/g;
+		// console.log(destinationFolder);
+		// const regex = /!\[.*?\]\((.*?)\)/g;
+		const regex = /!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g;
+
 
 		// Find all matches in the markdown content
 		let match;
 		let temp = md.parent;
+		let a=1
 		while ((match = regex.exec(md.parent)) !== null) {
-			const imageUrl = match[1];
+			console.log(a);
+			a++;
+			let filename = match[1];
+			const imageUrl = match[2];
 			console.log("Image found: " + imageUrl);
-			const filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
+			if (!filename) {
+			console.log("Description not found" + imageUrl);
+			filename = imageUrl.substring(97, imageUrl.indexOf('?') !== -1 ? imageUrl.indexOf('?') : undefined);
+			}
 			downloadImage(imageUrl, destinationFolder, filename)
 			destinationFolder = destinationFolder.replace("\\","/");
 			temp=temp.replace(imageUrl, "../../"+ destinationFolder + "/" + filename);
