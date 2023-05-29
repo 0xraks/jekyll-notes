@@ -22,7 +22,6 @@ export PKG_CONFIG_PATH=/path/to/pkg-config/files
 ```
 
 
-![thumbnail](../../static/images/2023-05-23-sample-test--blog.md/thumbnail)
 
 
 ![](../../static/images/2023-05-23-sample-test--blog.md/RGIF2.gif)
