@@ -22,7 +22,7 @@ image:
 ## What is No Machine?
 
 
-Simple script that helps you setup remote desktop access on any device. No machine supports drag and drop, sound pass through. mDNS based discovery of devices in local network and many more !
+Simple script that helps you set up remote desktop access on any device. No machine supports drag and drop, sound pass through. mDNS based discovery of devices in local network and many more !
 
 
 ## Installation script
@@ -58,7 +58,7 @@ rm nomachine.deb
 ```
 
 
-**Setup a display if it doesn’t exist**
+## Set up a display if it doesn’t exist
 
 
 ```bash
