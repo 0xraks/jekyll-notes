@@ -25,6 +25,9 @@ image:
 Simple script that helps you set up remote desktop access on any device. No machine supports drag and drop, sound pass through. mDNS based discovery of devices in local network and many more !
 
 
+> 💡 This works over local network only, not outside the LAN.
+
+
 ## Installation script
 
 - You can copy past the below script into a terminal.
