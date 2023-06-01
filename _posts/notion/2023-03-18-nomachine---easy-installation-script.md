@@ -86,3 +86,11 @@ echo "$CONFIG" | sudo tee -a xorg.conf > /dev/null
 
 NoMachine is a versatile tool for remote desktop access with many features. With this easy-to-use installation script, you can quickly set up NoMachine on any device. The script automatically detects the host architecture and downloads the appropriate package. We hope this cheat sheet helps you get started with NoMachine and makes your remote desktop experience more efficient and enjoyable!
 
+
+### ahsdasd
+
+
+```c
+#include
+```
+
