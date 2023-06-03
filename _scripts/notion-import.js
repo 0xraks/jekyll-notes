@@ -171,7 +171,8 @@ title: "${title}" ${fmtags} ${fmcats}
 		}
 		// console.log(temp);
 fm = fm + `---
-`
+`		
+		temp=temp.replace("undefined", "");
 		fs.writeFile(path.join(root, ftitle), fm + temp, (err) => {
 			console.log(fm);
 			// console.log(temp);
