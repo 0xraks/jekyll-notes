@@ -26,7 +26,7 @@ description: # used by seo meta and the atom feed
   This site documents my notes in the form of blog articles.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: ""
+url: "https://notes.raks.ml/"
 
 github:
   username: 0xraks # change to your github username
