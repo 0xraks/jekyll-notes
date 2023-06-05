@@ -24,6 +24,11 @@ Tmux is a terminal multiplexer that allows users to switch between several progr
 ### Add the below content in your ~/.tmux.conf
 
 
+```xml
+vi ~/.tmux.conf
+```
+
+
 ```yaml
 set-option -sa terminal-overrides ",xterm*:Tc"
 set -g mouse on
