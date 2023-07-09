@@ -18,7 +18,7 @@ timezone: Asia/Kolkata
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Rakshith # the main title
+title: Kernel Blog # the main title
 
 tagline: Documenting my tech related notes here # it will display as the sub-title
 
@@ -37,16 +37,16 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: Rakshith
+  name: Admin
   email: rakshithp@live.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/rakshithprakash # change to your twitter homepage
+    # - https://twitter.com/rakshithprakash # change to your twitter homepage
     - https://github.com/0xraks # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
-    - https://www.linkedin.com/in/rakshithprakash
-    - https://www.youtube.com/rakshithprakash
+    # - https://www.linkedin.com/in/rakshithprakash
+    # - https://www.youtube.com/rakshithprakash
 
 google_site_verification: hsuJPUPdCuez9r3Bfpj7rG1P1GEttExtK-Ga0SJ1rfM # fill in to your verification string
 
@@ -81,7 +81,7 @@ theme_mode: # [light|dark]
 img_cdn:
 future: true
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: static/android-chrome-512x512.png
 
 # boolean type, the global switch for TOC in posts.
 toc: true

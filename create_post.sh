@@ -15,7 +15,7 @@ touch "$filename"
 # Populate the file with the metadata
 echo "---" >> "$filename"
 echo "title: $title" >> "$filename"
-echo "author: Rakshith" >> "$filename"
+echo "author: Admin" >> "$filename"
 echo "date: $current_date" >> "$filename"
 echo "categories: []" >> "$filename"
 echo "tags: []" >> "$filename"
