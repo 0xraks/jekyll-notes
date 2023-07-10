@@ -6,6 +6,7 @@ title: "NoMachine - Easy Installation script"
 tags:
   - cheatsheet
   - remote-access
+  - linux
  
 categories:
   - software
@@ -55,7 +56,7 @@ rm nomachine.deb
 ```
 
 
-## Set up a display if it doesn’t exist
+## Set up a dummy display if it doesn’t exist
 
 
 ```bash
