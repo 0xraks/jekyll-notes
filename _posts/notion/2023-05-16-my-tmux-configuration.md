@@ -114,3 +114,23 @@ set -g status-right "#[fg=colour39] #(uptime | awk '{printf \$(NF-2)\" \"\$(NF-1
 
 ![Final Look!](../../static/images/2023-05-16-my-tmux-configuration.md/Final Look!)
 
+
+## One-Liner Copy paste
+
+
+```bash
+#!/bin/bash
+
+config_content=
+# Check if the file exists or needs to be created
+if [ ! -f ~/tmux.conf ]; then
+    touch ~/tmux.conf
+else
+    # Clear existing contents
+    > ~/tmux.conf
+fi
+
+# Add the new content
+echo "$config_content" > ~/tmux.conf
+```
+
