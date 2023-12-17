@@ -22,7 +22,7 @@ My handy-dandy networking cheat sheet. Whether you’re a beginner or an experie
 | Class D | 224.0.0.0 to 239.255.255.255 | Multicasting                   | N/A           | N/A           | N/A                    |
 | Class E | 240.0.0.0 to 255.255.255.255 | Research                       | N/A           | N/A           | N/A                    |
 
-- For Class A, the correct IP range is 1.0.0.0 to 126.0.0.0. The range you provided includes the loop-back address range, which is not part of the Class A range.
+undefined- For Class A, the correct IP range is 1.0.0.0 to 126.0.0.0. The range you provided includes the loop-back address range, which is not part of the Class A range.
 - For Class D and Class E, the IP ranges you provided are correct. However, they are not used for assigning IP addresses to hosts in regular networking. Class D is reserved for multicast addresses, and Class E is reserved for research purposes.
 - The subnet mask for Class D and Class E is not applicable, as they are not used for host addressing.
 - The number of networks and hosts per network for Class D and Class E are not applicable, as they are not used for regular network addressing.
