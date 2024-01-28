@@ -134,3 +134,12 @@ fi
 echo "$config_content" > ~/tmux.conf
 ```
 
+
+## Cheat Sheet
+
+
+% ⇒ Split horizontally
+
+
+“ ⇒ Split veritically
+
