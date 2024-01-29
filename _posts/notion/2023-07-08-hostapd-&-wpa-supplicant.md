@@ -16,6 +16,7 @@ categories:
 
 
 ```bash
+# Basic wpa_supplicant 
 country=us
 update_config=1
 ctrl_interface=/var/run/wpa_supplicant
@@ -32,6 +33,7 @@ network={
 
 
 ```bash
+#WPA3R3 ONLY STA
 country=us
 update_config=1
 ctrl_interface=/var/run/wpa_supplicant
@@ -51,6 +53,7 @@ network={
 
 
 ```bash
+#WPA3R3 ONLY 5G AP
 interface=wlan0
 driver=nl80211
 ctrl_interface=/var/run/hostapd
@@ -79,6 +82,7 @@ wpa=2
 
 
 ```bash
+# WPA2 SHA256 ONLY STA
 country=us
 update_config=1
 ctrl_interface=/var/run/wpa_supplicant
@@ -97,6 +101,7 @@ network={
 
 
 ```bash
+# WPA2 SHA256 ONLY AP 2G
 country_code=US
 interface=wlan0
 ssid=SHA256

@@ -12,6 +12,7 @@ categories:
 ---
 
 ```bash
+# New server setup
 sudo apt-get update
 sudo apt-get install openssh-server -y
 
@@ -37,9 +38,10 @@ sudo chown root:root /root/.ssh/authorized_keys
 
 # Disable login message
 sudo chmod -x /etc/update-motd.d/*
-touch ~/.bashrc
-theme = "export PS1="\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\$ "
-echo "$theme" | sudo tee -a ~/.bashrc
+sudo service ssh restart
+# touch ~/.bashrc
+# theme = "export PS1="\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\$ "
+# echo "$theme" | sudo tee -a ~/.bashrc
 
 # Restart SSH service
 sudo service ssh restart
