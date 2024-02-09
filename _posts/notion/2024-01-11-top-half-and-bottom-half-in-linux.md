@@ -11,7 +11,7 @@ categories:
 
 ---
 
-### Top Half and Bottom Half in Linux
+## Top Half and Bottom Half in Linux
 
 
 In the context of Linux, the term "bottom half" refers to a concept in the Linux kernel that is related to handling asynchronous events and interrupt processing. The Linux kernel uses a mechanism called the "Softirq" and "Tasklet" subsystems to manage and process interrupts efficiently.
@@ -32,7 +32,7 @@ It's worth noting that the concept of bottom halves is specific to the Linux ker
 > 💡 [https://developer.ibm.com/tutorials/l-tasklets/](https://developer.ibm.com/tutorials/l-tasklets/)
 
 
-### Tasklets and Workqueues
+## Tasklets and Workqueues
 
 
 Top Half - Minimal Work - Done in interrupt context
@@ -53,7 +53,7 @@ Work queues permit work to be deferred outside of the interrupt context into the
 Thus, softirqs are reentrant functions and must explicitly protect their data structures with spin locks
 
 
-### 4 Kinds of operations can be performed on deferrable functions
+## 4 Kinds of operations can be performed on deferrable functions
 
 1. Initialization - Done when kernel inits or Module is loaded.
 2. Activation - Deferrable function is marked as pending. So kernel knows next time that this function needs to be run.
@@ -66,14 +66,14 @@ Activation and execution are bound together: a deferrable function that has been
 > A function is said to be reentrant if there is a provision to interrupt the function in the course of execution, service the interrupt service routine and then resume the earlier going on function, without hampering its earlier course of action. Reentrant functions are used in applications like hardware interrupt handling, recursion, etc.
 
 
-Requirements for function to be re-entrant
+### Requirements for function to be re-entrant
 
 - Do not use static or global variables in your function since those may be changed by time your function resumes
 - Function must not modify its own code (e.g. some low level graphic routines may have "habit" to generate itself). It may not modify itself without synchronization.
 - It does not call non-reentrant functions.
 - It does not use the hardware in a non-atomic way.
 
-When to use re-entrant functions?
+### When to use re-entrant functions?
 
 - Interrupt code
 - Functions that will be called from multiple threads/tasks must be re-entrant.
