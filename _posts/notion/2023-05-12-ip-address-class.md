@@ -9,6 +9,7 @@ tags:
 categories:
   - software
 
+pin: false
 ---
 
 My handy-dandy networking cheat sheet. Whether you’re a beginner or an experienced network administrator, this cheat sheet provides essential information on IP addressing, subnetting, protocols, and more.

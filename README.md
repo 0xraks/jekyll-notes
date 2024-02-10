@@ -1,3 +1,11 @@
+Uses node 17 for notion importer script
+DATABASE_ID of notion 
+If your URL looks like below, then <long_hash_1> is the database ID and <long_hash_2> is the view ID.
+
+https://www.notion.so/<long_hash_1>?v=<long_hash_2>
+
+NOTION_TOKEN is the API key for your account.
+
 # Chirpy Starter
 
 [![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;

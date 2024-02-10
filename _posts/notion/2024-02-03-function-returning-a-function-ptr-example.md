@@ -9,6 +9,7 @@ tags:
 categories:
   - software
 
+pin: false
 ---
 
 ```javascript

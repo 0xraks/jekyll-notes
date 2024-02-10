@@ -10,6 +10,7 @@ tags:
 categories:
   - software
 
+pin: false
 ---
 
 ## Basic WPA sup

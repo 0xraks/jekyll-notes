@@ -81,6 +81,12 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 		if (ptitle?.length > 0) {
 			title = ptitle[0]?.['plain_text']
 		}
+		//Pin complete this 
+		let pinned = false; // Default value if "Pins" property is not present
+		if (r.properties?.['pinned']?.checkbox) {
+			pinned = r.properties['pinned'].checkbox;
+		}
+
 		// tags
 		let tags = []
 		let ptags = r.properties?.['Tags']?.['multi_select']
@@ -123,6 +129,7 @@ layout: post
 comments: ${comments}
 date: ${date}
 title: "${title}" ${fmtags} ${fmcats}
+pin: ${pinned}
 `
 		const mdblocks = await n2m.pageToMarkdown(id);
 		const md = n2m.toMarkdownString(mdblocks);

@@ -9,6 +9,7 @@ tags:
 categories:
   - software
 
+pin: false
 ---
 
 ## Top Half and Bottom Half in Linux

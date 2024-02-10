@@ -9,6 +9,7 @@ tags:
 categories:
   - tech
 
+pin: false
 ---
 
 TEST
