@@ -15,7 +15,7 @@ pin: false
 Script to install a basic Openstack instance.
 
 
-```javascript
+```bash
 #!/bin/bash
 
 # Update package list
