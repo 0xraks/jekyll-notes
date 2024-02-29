@@ -12,6 +12,9 @@ categories:
 pin: false
 ---
 
+Prepare a fresh Ubuntu 22.04 VM and follow the below commands.
+
+
 Script to install a basic Openstack instance.
 
 
@@ -34,7 +37,7 @@ sudo chmod +x /opt/stack
 echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
 
 # Switch to 'stack' user
-sudo -u stack -i << EOF
+sudo -u stack -i
 
 # Clone devstack repository
 git clone https://git.openstack.org/openstack-dev/devstack
