@@ -42,24 +42,22 @@ sudo -u stack -i
 # Clone devstack repository
 git clone https://git.openstack.org/openstack-dev/devstack
 cd devstack
-    
-# Create and edit local.conf file
-cat << EOF2 > local.conf
+```
+
+
+Create a file called local.conf
+
+
+```c
+nano local.conf
+```
+
+
+```c
 [[local|localrc]]
 ADMIN_PASSWORD=secret
-DATABASE_PASSWORD=\$ADMIN_PASSWORD
-RABBIT_PASSWORD=\$ADMIN_PASSWORD
-SERVICE_PASSWORD=\$ADMIN_PASSWORD
-EOF2
-
-# Save and exit editor
-exit
-EOF
-
-# Change directory to devstack
-cd /opt/stack/devstack
-
-# Run stack.sh script
-./stack.sh
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
 ```
 
