@@ -12,7 +12,7 @@ categories:
 pin: false
 ---
 
-Prepare a fresh Ubuntu 22.04 VM and follow the below commands.
+Prepare a fresh Ubuntu 22.04 VM and follow the below commands to install openstack
 
 
 Script to install a basic Openstack instance.
@@ -59,5 +59,13 @@ ADMIN_PASSWORD=secret
 DATABASE_PASSWORD=$ADMIN_PASSWORD
 RABBIT_PASSWORD=$ADMIN_PASSWORD
 SERVICE_PASSWORD=$ADMIN_PASSWORD
+```
+
+
+## Add ubuntu bionic image to openstack by downloading it with wget
+
+
+```c
+https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
 ```
 
