@@ -13,7 +13,7 @@ categories:
 pin: true
 ---
 
-The 4-way handshake is a key process in the establishment of a secure connection between a client device and a Wi-Fi access point. It's primarily used in WPA2-PSK (Wi-Fi Protected Access 2 with Pre-Shared Key) and WPA3-Personal security protocols. Here's how it works, along with an overview of the authentication and association process:
+The 4-way handshake is a key process in the establishment of a secure connection between a client device and a Wi-Fi access point. It's primarily used in WPA2-PSK (Wi-Fi Protected Access 2 with Pre-Shared Key) and WPA3-Personal security protocols. Here's how r it works, along with an overview of the authentication and association process:
 
 
 ## State Machine of a client joining a 802.11 AP
