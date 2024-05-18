@@ -125,5 +125,9 @@ Table 5-2. Various types of synchronization techniques used by the kernel
 | Read-copy-update (RCU)    | Lock-free access to shared data structures through pointers | All CPUs              |
 
 undefined
-### 
+### System Calls to allocate a Linux interrupt
 
+- request_irq()
+- devm_request_irq()
+- request_threaded_irq()
+- devm_request_threaded_irq() (recommended!)
