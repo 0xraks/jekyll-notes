@@ -12,6 +12,46 @@ categories:
 pin: false
 ---
 
+Modern system motherboards will have an interrupt controller chip of some sort, which is often called the [IO][A]PIC, short for IO-[Advanced] Programmable Interrupt Controller, on
+x86 or a generic interrupt controller (GIC) on ARM. The PIC (to keep it simple, we'll just use the generic term PIC) has one line to the CPU's interrupt pin. Onboard peripherals capable of asserting interrupts will have an
+IRQ line to the PIC.
+
+
+Each CPU core has one or more IRQ line. The GIC can distribute the interrupts amongg multiple CPU cores.
+
+
+### What happens when a NIC packet is received?
+
+1. The peripheral device (the NIC) now needs to emit (assert) a hardware interrupt;
+thus, it asserts its line on the PIC (low or high logic as required; all this is internal
+to the hardware).
+2. The PIC, on seeing that a peripheral line has been asserted, saves the asserted line
+value in a register.
+3. The PIC then asserts the CPU's interrupt pin.
+4. The control unit on the processor checks for the presence of hardware interrupts
+_**on every CPU after every single machine instruction runs**_. Thus, if a hardware
+interrupt occurs, it will certainly come to know about it almost immediately. The
+CPU will then raise a hardware interrupt (of course interrupts can be masked;
+we'll discuss this in more detail later in the Enabling and disabling IRQs section).
+5. The low-level (BSP/platform) code on the OS will be hooked into this and will
+react (this is often code that's at the assembly level); for example, on the ARM-32,
+the low-level C entry point for a hardware interrupt is
+arch/arm/kernel/irq.c:asm_do_IRQ().
+6. From here, the OS executes code paths that ultimately invoke the registered
+interrupt handler routine(s) of the driver(s) this interrupt is to be serviced by. 
+The hardware interrupt is literally the top priority on the Linux OS: it preempts whatever's
+currently running – be it user or kernel-space code paths – in order to run
+
+> 💡 Modern NIC drivers can switch between interrupt and polled mode based on demand.
+
+
+### System Calls to allocate a Linux interrupt
+
+- request_irq()
+- devm_request_irq()
+- request_threaded_irq()
+- devm_request_threaded_irq() (recommended!)
+
 ## Top Half and Bottom Half in Linux
 
 
@@ -125,9 +165,5 @@ Table 5-2. Various types of synchronization techniques used by the kernel
 | Read-copy-update (RCU)    | Lock-free access to shared data structures through pointers | All CPUs              |
 
 undefined
-### System Calls to allocate a Linux interrupt
+### 
 
-- request_irq()
-- devm_request_irq()
-- request_threaded_irq()
-- devm_request_threaded_irq() (recommended!)
