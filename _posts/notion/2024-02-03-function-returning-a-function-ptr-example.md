@@ -12,7 +12,7 @@ categories:
 pin: false
 ---
 
-```javascript
+```c
 #include <stdio.h>
 
 typedef int (*OperationFunc)(char);
