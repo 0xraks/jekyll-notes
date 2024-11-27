@@ -19,7 +19,6 @@ typedef int (*OperationFunc)(char);
 
 OperationFunc  additionFunction(int x)
 
-
 // Function that returns a function pointer
 int (*additionFunction(int x))(char) {
         int add(char c) {
