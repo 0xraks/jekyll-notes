@@ -339,3 +339,48 @@ In this case, `eaytb` can be used to access the rows of the array. For instance,
 | long double            | 12             | -                               | %Lf              |
 
 undefined
+### What is the output of below code?
+
+
+```javascript
+#include <stdio.h>
+
+int main()
+{
+    const char normal[] = "stdout ";
+    const char error[] = "stderr ";
+
+    fprintf(stdout,normal);
+    fprintf(stderr,error);
+    fprintf(stdout,normal);
+    fprintf(stderr,error);
+    fprintf(stdout,normal);
+    fprintf(stderr,error);
+	putchar('\n');
+
+    return(0);
+}
+
+```
+
+
+```javascript
+stderr stderr stderr stdout stdout stdout 
+```
+
+
+The reason is that stderr are not buffered, whereas stdout is always buffered and output when buffer is full or during a new line character.
+
+
+## FORK
+
+
+fork() split the program flow into two processes. The commands following after the fork will be executed by two different processes. (Program will be split)
+
+
+```javascript
+process = fork()
+```
+
+- process value is 0 in child process.
+- It is 1 in parent process.
