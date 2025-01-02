@@ -298,7 +298,7 @@ int (*arr)[10];
 ```
 
 
-### Array of pointers
+## Array of pointers or 2D Arrays
 
 
 ```c
@@ -308,16 +308,32 @@ int *p[10];
 
 ```c
 int array[5][13];  // A 2D array with 5 rows and 13 columns
+int dp[rows][cols];
+void func(int rows, int cols, int dp[rows][cols]);
+void func(int rows, int cols, int dp[][cols]);  // Rows can be omitted
 int (*eaytb)[13];  // Pointer to an array of 13 integers
-eaytb = array;     // Pointing eaytb to the first row of the array
+eaytb = array;     // Pointing eaytb to the first row of the arra
 ```
 
 
-
 In this case, `eaytb` can be used to access the rows of the array. For instance, `(*eaytb)[0]` would give you the first row of the array, while `(*eaytb)[1]` would give you the second row, and so on.
+Passing 
 
 
+### Comparison Table:
 
+
+| **Method**             | **Memory Layout** | **Indexing**       | **Ease of Passing**      | **Flexibility**              |
+| ---------------------- | ----------------- | ------------------ | ------------------------ | ---------------------------- |
+| Static Allocation      | Contiguous        | `dp[i][j]`         | Easy                     | Fixed size at compile-time   |
+| Contiguous Memory (1D) | Contiguous        | `dp[i * cols + j]` | Requires manual indexing | Flexible runtime size        |
+| Pointer-to-Pointer     | Non-contiguous    | `dp[i][j]`         | Easy                     | Flexible runtime size        |
+| Variable-Length Arrays | Contiguous        | `dp[i][j]`         | Easy                     | Flexible runtime size (C99+) |
+
+undefined- **Static arrays:** Use for fixed-size arrays known at compile-time.
+- **Flattened 1D arrays:** Use for dynamic size with contiguous memory for better cache performance.
+- **Pointer-to-pointer:** Use when rows need independent allocation or resizing.
+- **VLAs:** Use for flexible sizes if your compiler supports C99 or later.
 
 ### C Basic Data Type Sizes and Format Specifiers
 
