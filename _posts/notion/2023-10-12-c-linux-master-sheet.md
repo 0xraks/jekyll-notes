@@ -400,3 +400,49 @@ process = fork()
 
 - process value is 0 in child process.
 - It is 1 in parent process.
+
+### Extract IP from a 32byte array
+
+
+```c
+#include <stdio.h>
+
+void extract_ip(uint32_t ip) {
+    // Extract each octet by shifting and masking
+    uint8_t octet1 = (ip >> 24) & 0xFF; // First 8 bits
+    uint8_t octet2 = (ip >> 16) & 0xFF; // Next 8 bits
+    uint8_t octet3 = (ip >> 8) & 0xFF;  // Next 8 bits
+    uint8_t octet4 = ip & 0xFF;         // Last 8 bits
+
+    // Print the extracted IP address in dotted decimal format
+    printf("%d.%d.%d.%d\n", octet1, octet2, octet3, octet4);
+}
+
+int main() {
+    uint32_t ip = 3232235776;  // 192.168.1.0
+    extract_ip(ip);
+    return 0;
+}
+
+```
+
+
+![Max depth](../../static/images/2023-10-12-c-linux-master-sheet.md/Max depth)
+
+
+```c
+int maxDepth(struct Node* root) {
+    if (!root) return 0;
+    if (root->numChildren == 0) return 1;
+    int max=0;
+    for (int i=0;i<(root->numChildren);i++){
+        int temp = maxDepth(root->children[i]) +1;
+        max = temp > max ? temp : max;
+    }
+    return max;
+}
+```
+
+
+Find intersection of LL
+

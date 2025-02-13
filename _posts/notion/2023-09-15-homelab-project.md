@@ -24,6 +24,12 @@ pin: false
 - Node-Red for Monitoring and Control of the Cluster, Wake on LAN support.
 - FlightRadar ADSB upstream link
 
+This whole thing started with just a Raspberry Pi 3 running 24/7, on solar power!
+
+
+Over the course of last 7 years, it has grown to what you see today in the pictures. 
+
+
 ### Gallery
 
 
