@@ -184,7 +184,12 @@ for (struct ListNode *i = head; i; i=i->next, len++);
 ```
 
 
-> 💡 Only one variable can be declared in for loop init section. So we cant declare `len` there. In the second and third place holder of for loop, we can have multiple statements separated by comma.
+> 💡 Only one TYPE of variable can be declared in for loop init section. So we cant declare `len` there. In the second and third place holder of for loop, we can have multiple statements separated by comma. The below example declares two variables of same type and it is VALID.
+
+
+```c
+for (int i = 0, sum = 0; i < n; i++) {
+```
 
 
 ### 2D Array Allocation and Free
@@ -445,4 +450,24 @@ int maxDepth(struct Node* root) {
 
 
 Find intersection of LL
+
+
+## Guess the Output
+
+
+### 
+
+
+```c
+// Online C compiler to run C program online
+#include <stdio.h>
+
+int main() {
+    // Write C code here
+    int a=10;
+    printf("a=%d\n",sizeof(a++));
+    printf("new a = %d\n",a);
+    return 0;
+}
+```
 
