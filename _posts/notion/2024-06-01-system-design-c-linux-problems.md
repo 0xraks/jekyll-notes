@@ -657,3 +657,86 @@ RTC interfaces are critical for maintaining accurate time in embedded systems, u
 
 These questions and implementations provide a glimpse into real-world challenges and solutions in embedded systems and low-level programming, highlighting the practical importance of these skills.
 
+
+## System design
+
+
+Write a program to make a function return more than 1 value.
+Write a program to find out whether a given number is of the form 2n.
+Write a program to print the string “Hello World” 10 times without using a for, while or do while loop.
+Assume the following API:
+
+
+typedef void (*Callback) (int value);
+
+
+void register_callback(int command, Callback *callback);
+
+
+void run_function(int command, int value);
+
+
+/* Assume that the usage code is as follows */
+
+
+void callback_command1(int value)
+
+
+{
+
+
+// ...
+
+
+}
+
+
+void callback_command2(int value)
+
+
+{
+
+
+// ...
+
+
+}
+
+
+// There are callbacks for each of several commands
+
+
+int main()
+
+
+{
+
+
+register_callback(1, callback_command1);
+
+
+register_callback(2, callback_command2);
+
+
+// ...
+
+
+int command = 1; // or 2, 3,...
+
+
+run_function(command, value);
+
+
+return 0;
+
+
+}
+
+
+Answer the following questions:
+
+
+Write an implementation of register_callback that will maintain the collection of commands and associated values
+Write an implementation of run_function that will call the appropriate command with the value as a parameter
+Can you rewrite this system using pure static function calls (ie, no function pointers)?
+

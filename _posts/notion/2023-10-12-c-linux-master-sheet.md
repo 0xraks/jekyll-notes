@@ -30,6 +30,9 @@ C interview cheatsheet of important questions. Make sure to revise the list dail
 #define IS_POWER_OF_TWO(num) ((num) > 0 && ((num) & ((num) - 1)) == 0)
 #define SWAP(x,y) (x ^= y ^=x ^= y)
 
+#define IS_EVEN(num) (((num) & 1) == 0)
+#define IS_ODD(num) (((num) & 1) != 0)
+
 #define SWAP(x,y,T) do { \
     T temp = (*x);\
     (*x) = (*y); \
