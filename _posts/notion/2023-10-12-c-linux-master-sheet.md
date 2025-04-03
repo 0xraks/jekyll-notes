@@ -14,7 +14,10 @@ categories:
 pin: true
 ---
 
-C interview cheatsheet of important questions. Make sure to revise the list daily.
+C interview cheatsheet of important questions. 
+
+
+Make sure to revise the list right before an important interview
 
 
 ## Important C macros
@@ -458,9 +461,6 @@ Find intersection of LL
 ## Guess the Output
 
 
-### 
-
-
 ```c
 // Online C compiler to run C program online
 #include <stdio.h>
@@ -473,4 +473,54 @@ int main() {
     return 0;
 }
 ```
+
+
+## _p++ vs (*_p)++ vs *p++
+
+
+`*` (dereference) **has higher precedence than** **`++`** **(post-increment)**.
+
+
+```c++
+#include <stdio.h>
+
+int main() {
+    int arr[] = {10, 20, 30};
+    int *p = arr;
+
+    printf("%d\n", *p++);  // Dereference, then increment pointer
+    // means print *p
+    // then do p++
+    printf("%d\n", *p);
+    return 0;
+}
+
+// output
+//10
+//20
+```
+
+
+```c++
+#include <stdio.h>
+
+int main() {
+	int arr[] = {10, 20, 30};
+	int *p = arr;
+
+	printf("%d\n", (*p)++);  // Dereference, then increment pointer
+	// print (*p)
+	// then do (*p) = (*p)++
+	printf("%d\n", *p);
+	return 0;
+}
+
+//output
+//10
+//11
+
+```
+
+
+Struct padding
 
