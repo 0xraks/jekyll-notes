@@ -524,3 +524,147 @@ int main() {
 
 Struct padding
 
+
+Day 5: Bit Fields in C – Packing Data at the Bit Level
+
+
+Bit fields in C provide a memory-efficient way to store small values within a single integer by specifying the exact number of bits a variable should use. This is useful in low-level programming, embedded systems, and protocols where memory is critical.
+
+
+➧ What Are Bit Fields?
+
+
+Instead of allocating a full int (usually 4 bytes or 32 bits), bit fields let you define variables with precise bit-width inside a struct.
+
+
+====================================
+
+
+Defining Bit Fields
+
+
+struct {
+
+
+unsigned int flag:1; // 1 bit for a flag
+
+
+unsigned int mode:2; // 2 bits for mode (0-3)
+
+
+} s;
+
+
+s.flag = 1; // Stores 1 in a single bit
+
+
+s.mode = 2; // Stores 2 using 2 bits (binary: 10)
+
+
+====================================
+
+
+flag:1 → Uses 1 bit (0 or 1).
+
+
+mode:2 → Uses 2 bits (0 to 3).
+
+
+The compiler packs these fields efficiently into an int.
+
+
+➧ Using Bit Fields
+
+
+====================================
+
+
+int f = s.flag; // Reads 1
+
+
+s.mode = 3; // Sets mode to 3 (binary: 11)
+
+
+====================================
+
+
+Bit fields behave like normal struct members.
+
+
+The compiler manages masking and shifting automatically.
+
+
+➧ Real-World Example – Network Packets
+
+
+====================================
+
+
+struct Packet {
+
+
+unsigned int type:4; // 4 bits: 0-15 for packet type
+
+
+unsigned int len:6; // 6 bits: 0-63 for length
+
+
+} pkt = {5, 42}; // Type = 5, Length = 42
+
+
+====================================
+
+
+type:4 fits 0-15 in 4 bits.
+
+
+len:6 fits 0-63 in 6 bits.
+
+
+The struct is only 10 bits instead of 64 (if using full int values).
+
+
+➧ Pros & Cons
+
+
+Pros:
+
+
+Memory-efficient → Uses only the required bits.
+
+
+Ideal for hardware → Registers, protocol headers, etc.
+
+
+Faster access → Smaller structures improve performance.
+
+
+Cons:
+
+
+Portability issues → Bit order depends on compiler/hardware.
+
+
+No direct addressing → &s.flag won’t work.
+
+
+Signed values → Behavior varies due to sign extension.
+
+
+➧ Where Are Bit Fields Used?
+
+
+Embedded Systems → Hardware registers.
+
+
+Networking → Flags, headers, protocol data.
+
+
+Data Compression → Packing multiple values efficiently.
+
+
+Bit fields are powerful but require careful use. How do you use them in your projects?
+
+
+## D
+
