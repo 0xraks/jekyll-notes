@@ -265,13 +265,289 @@ int main() {
 ```
 
 
-## Mutex, Semaphore and Spinlock
+### 3D Array Allocation and Free
+
+
+## Linux Kernel Synchronization Techniques 
+
+- Multiple threads can run simultaneously on modern SMP systems (CONFIG_SMP=y) or Single core systems with CONFIG_PREEMPT enabled
+- This introduces race condition problem where two threads race to access and modify a single variable. There is no guarantee that the threads will modify the variable as expected. Behavior is undefined.
+- On such systems and scenarios where such a condition is encountered , we need to synchronize the two threads to make sure that they modify the shared variable , one at a time
+
+### Mutex
+
+
+[https://docs.kernel.org/locking/mutex-design.html](https://docs.kernel.org/locking/mutex-design.html)
+
+
+Mutex enforces serialization on shared memory systems(serial access meaning one at a time).  Mutexes are sleeping locks which behave similarly to binary semaphores.
+
+
+Mutexes are represented by ‘struct mutex’, defined in include/linux/mutex.h and implemented in kernel/locking/mutex.c
+
+
+Mutexs have ownership. mutex→owner  store the thread owning the mutex. Any modifications to the thread must be done by same thread.
+
+
+```c
+struct mutex {
+    atomic_long_t       owner;
+    spinlock_t      wait_lock;
+#ifdef CONFIG_MUTEX_SPIN_ON_OWNER
+    struct optimistic_spin_queue osq; /* Spinner MCS lock */
+#endif
+    struct list_head    wait_list;
+#ifdef CONFIG_DEBUG_MUTEXES
+    void            *magic;
+#endif
+#ifdef CONFIG_DEBUG_LOCK_ALLOC
+    struct lockdep_map  dep_map;
+#endif
+};
+```
+
+
+### Contents of mutex Linux Kernel structure
+
+
+### 🔹 `atomic_long_t owner`
+
+- **Purpose**: Stores a reference to the current **owner thread** of the mutex.
+- **Use**:
+	- Detect recursion (same thread trying to relock).
+	- Used in `mutex_trylock()` and lock debugging.
+- `NULL` (or 0) means no one owns the mutex.
+
+---
+
+
+### 🔹 `spinlock_t wait_lock`
+
+- **Purpose**: Protects the **wait list** (below).
+- **Use**: Ensures atomicity when updating or walking through the list of waiting tasks.
+- **Lightweight and fast** lock for short critical sections.
+
+---
+
+
+### 🔹 `struct list_head wait_list`
+
+- **Purpose**: Holds tasks that are **blocked, waiting** for the mutex. (list_head is a commonly used DLL gluebased list in kernel)
+- **Use**: When a thread tries to acquire a held mutex, it’s put on this list.
+- Used in `mutex_lock()` when a task sleeps waiting for the lock.
+
+---
+
+
+### 🔹 `struct optimistic_spin_queue osq` (under `CONFIG_MUTEX_SPIN_ON_OWNER`)
+
+- **Purpose**: Enables **spin-then-sleep** optimization.
+- **Use**: If a task thinks the owner will release the mutex soon (still running), it spins briefly instead of sleeping.
+- This improves performance on multicore systems under contention
+
+---
+
+
+### 🔹 `void *magic` (under `CONFIG_DEBUG_MUTEXES`)
+
+- **Purpose**: Used for internal **debugging** to detect corruption.
+- **Use**: A known magic value is stored; if it's wrong later, something corrupted the mutex.
+
+🔧 Only compiled in when:
+
+
+---
+
+
+### 🔹 `struct lockdep_map dep_map` (under `CONFIG_DEBUG_LOCK_ALLOC`)
+
+- **Purpose**: Used by **lock dependency checker** (`lockdep`) to detect deadlocks.
+- **Use**: Tracks lock acquisition ordering between different locks.
+- Helps detect potential **AB-BA deadlocks** (A → B and B → A).
+
+The mutex subsystem in Linux Kernel checks and enforces the following rules:
+
+- Only the owner can unlock the mutex.
+- Multiple unlocks are not permitted.
+- Recursive locking/unlocking is not permitted.
+- A mutex must only be initialized via the API (see below).
+- A task may not exit with a mutex held.
+- Memory areas where held locks reside must not be freed.
+- Held mutexes must not be reinitialized.
+- Mutexes may not be used in hardware or software interrupt contexts such as tasklets and timers.
+
+API for Linux Kernel Mutex
+
+
+Statically define the mutex:
+
+
+`DEFINE_MUTEX(name);`
+
+
+Dynamically initialize the mutex:
+
+
+`mutex_init(mutex);`
+
+
+Acquire the mutex, uninterruptible:
+
+
+`void mutex_lock(struct mutex *lock);
+void mutex_lock_nested(struct mutex *lock, unsigned int subclass);
+int  mutex_trylock(struct mutex *lock);`
+
+
+Acquire the mutex, interruptible:
+
+
+`int mutex_lock_interruptible_nested(struct mutex *lock,
+                                    unsigned int subclass);
+int mutex_lock_interruptible(struct mutex *lock);`
+
+
+Acquire the mutex, interruptible, if dec to 0:
+
+
+`int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);`
+
+
+Unlock the mutex:
+
+
+`void mutex_unlock(struct mutex *lock);`
+
+
+Test if the mutex is taken:
+
+
+`int mutex_is_locked(struct mutex *lock);`
+
+
+### Disadvantages
+
+
+Unlike its original design and purpose, ‘struct mutex’ is among the largest locks in the kernel. E.g: on x86-64 it is 32 bytes, where ‘struct semaphore’ is 24 bytes and rw_semaphore is 40 bytes. Larger structure sizes mean more CPU cache and memory footprint.
+
+
+### When to use mutexes
+
+
+Unless the strict semantics of mutexes are unsuitable and/or the critical region prevents the lock from being shared, always prefer them to any other locking primitive.
+
+
+### Where not to use mutex:
+
+
+Interrupt context — mutex sleeps! Use spinlock_t instead.
+
+
+Atomic context / softirqs — not allowed.
+
+
+### Practical Examples of Mutex in Kernel Driver implementation.
+
+1. Kernel Ring Buffers - Producer consumer scenario. Say a shared skb buffer
+
+```c
+skb_queue_tail(&dev->tx_queue, skb); // Producer
+skb_dequeue(&dev->tx_queue);         // Consumer
+```
+
+
+Internally, these use `spinlock` (for performance) or `mutex` if the context allows sleeping.
+
+1. Common ring buffers
+
+	```c
+	struct ring_buffer {
+	    char buf[1024];
+	    size_t head, tail;
+	    struct mutex lock;
+	};
+	
+	struct ring_buffer rb;
+	
+	mutex_lock(&rb->lock);
+	// read or write to buffer
+	mutex_unlock(&rb->lock);
+	```
+
+
+	```c
+	void produce(struct ring_buffer *rb, char c) {
+	    mutex_lock(&rb->lock);
+	    rb->buf[rb->head++] = c;
+	    if (rb->head >= sizeof(rb->buf))
+	        rb->head = 0;
+	    mutex_unlock(&rb->lock);
+	}
+	
+	char consume(struct ring_buffer *rb) {
+	    char c;
+	    mutex_lock(&rb->lock);
+	    c = rb->buf[rb->tail++];
+	    if (rb->tail >= sizeof(rb->buf))
+	        rb->tail = 0;
+	    mutex_unlock(&rb->lock);
+	    return c;
+	}
+	```
+
+
+### Self-deadlock Concept 
+
+
+Self-deadlock is a where the thread which has already acquired the lock, tried to reacquire the lock again.(Recursive locking)
+
+
+```c
+mutex_lock(&my_lock);
+// Some code...
+mutex_lock(&my_lock);  // Oops! Same thread trying to lock it again
+```
+
+
+### Recursive Locking Concept
+
+
+**Recursive locking** allows **the same thread** to **acquire the same lock multiple times** **without causing a deadlock**.
+
+
+In complex systems or deep call chains, a thread might:
+
+- Hold a lock in a **caller function**.
+- Call another function (deeper in the call stack) that **also tries to acquire the same lock**.
+
+Without recursive locking, this would **deadlock**.
+
+
+With recursive locking, the system tracks how many times the lock has been acquired and only **fully releases it** when the lock is released the same number of times.
+
+
+### How Recursive Mutex Works
+
+- Every time the same thread locks it, an **internal counter** is incremented.
+- Each `unlock()` call **decrements the counter**.
+- The mutex is only fully released (and available to other threads) when the counter hits **zero**.
+
+Available in pthreads but not by default, you need to  declare mutex attribute object and set the recursive flag to enable recursive mutex
+
+
+### Circular deadlocks Concept
+
+
+A series of tasks waiting on the next one in a circular manner.
+
+- Task A is waiting on Task B,
+- Task B is waiting on Task C,
+- Task C is waiting on Task A.
+
+Mutex, Semaphore and Spinlock
 
 
 <u>**Semaphore**</u>: Use a semaphore when you (thread) want to sleep till some other thread tells you to wake up. Semaphore 'down' happens in one thread (producer) and semaphore 'up' (for same semaphore) happens in another thread (consumer) e.g.: In producer-consumer problem, producer wants to sleep till at least one buffer slot is empty - only the consumer thread can tell when a buffer slot is empty.
-
-
-<u>**Mutex**</u>: Use a mutex when you (thread) want to execute code that should not be executed by any other thread at the same time. Mutex 'down' happens in one thread and mutex 'up' must happen in the same thread later on. e.g.: If you are deleting a node from a global linked list, you do not want another thread to muck around with pointers while you are deleting the node. When you acquire a mutex and are busy deleting a node, if another thread tries to acquire the same mutex, it will be put to sleep till you release the mutex.
 
 
 <u>**Spinlock**</u>: Use a spinlock when you really want to use a mutex but your thread is not allowed to sleep. e.g.: An interrupt handler within OS kernel must never sleep. If it does the system will freeze / crash. If you need to insert a node to globally shared linked list from the interrupt handler, acquire a spinlock - insert node - release spinlock
