@@ -544,6 +544,25 @@ A series of tasks waiting on the next one in a circular manner.
 - Task B is waiting on Task C,
 - Task C is waiting on Task A.
 
+### Mutex Lock and Unlock Paths
+
+
+| Lock Path | Lock State         | Action                                | Performance |
+| --------- | ------------------ | ------------------------------------- | ----------- |
+| Fast Path | Unlocked           | Immediate acquisition                 | ✅ Best      |
+| Mid Path  | Locked, short wait | Spin (busy wait)                      | ⚖️ Medium   |
+| Slow Path | Locked, long wait  | Sleep & wake up later(context switch) | 🐢 Worst    |
+
+undefined
+| Unlock Path | Waiters | Action                      | Performance |
+| ----------- | ------- | --------------------------- | ----------- |
+| Fast Path   | No      | Clear owner, mark unlocked  | ✅ Best      |
+| Slow Path   | Yes     | Wake up one or more waiters | 🐢 Slower   |
+
+undefined
+When unlocking a mutex that has waiters, the Linux kernel tries to **wake up the highest-priority waiter**, not just the one that has waited the longest.
+
+
 Mutex, Semaphore and Spinlock
 
 
