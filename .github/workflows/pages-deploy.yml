@@ -35,6 +35,8 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5.0.0
+        with:
+          enablement: true   # auto-enable GitHub Pages if not set up yet
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.200.0
