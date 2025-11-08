@@ -74,6 +74,8 @@ Make sure to revise the list right before an important interview
 
 ```c
 #define SIZEOF(type) ((char *)(&type + 1) - (char *)(&type))
+#define SIZEOF_TYPE(type) ((char *)((type *)0 + 1) - (char *)((type *)0))
+
 
 /* Find offset value of a member of a structure */
 #define OFFSET_OF(type, member) ((size_t) &(((type *)0)->member))
