@@ -173,7 +173,7 @@ int main() {
         .print = printer
     };
     
-    my_ops.print(brcmf_ops.data); 
+    my_ops.print(my_ops.data); 
     return 0;
 }
  
